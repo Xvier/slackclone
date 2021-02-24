@@ -5,25 +5,42 @@ import Login from "./components/Login";
 import Header from "./components/Header";
 import Sidebar from "./components/Sidebar";
 import styled from "styled-components";
+import { ThemeProvider } from "styled-components";
+import { normalTheme } from "./themes/purple";
+import { darkTheme } from "./themes/dark";
+import { useState } from "react";
+
 function App() {
+  const stored = localStorage.getItem("isDarkMode");
+  const [isDarkMode, setIsDarkMode] = useState(
+    stored === "true" ? true : false
+  );
+
+  function handleClick() {
+    setIsDarkMode(!isDarkMode);
+    localStorage.setItem("isDarkMode", !isDarkMode);
+  }
+
   return (
     <div className="App">
-      <Router>
-        <Container>
-          <Header />
-          <Main>
-            <Sidebar />
-            <Switch>
-              <Route path="/room">
-                <Chat />
-              </Route>
-              <Route path="/">
-                <Login />
-              </Route>
-            </Switch>
-          </Main>
-        </Container>
-      </Router>
+      <ThemeProvider theme={isDarkMode ? darkTheme : normalTheme}>
+        <Router>
+          <Container>
+            <Header runClick={handleClick} />
+            <Main>
+              <Sidebar />
+              <Switch>
+                <Route path="/room">
+                  <Chat />
+                </Route>
+                <Route path="/">
+                  <Login />
+                </Route>
+              </Switch>
+            </Main>
+          </Container>
+        </Router>
+      </ThemeProvider>
     </div>
   );
 }

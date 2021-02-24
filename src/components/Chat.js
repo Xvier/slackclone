@@ -26,7 +26,10 @@ function Chat() {
 
 export default Chat;
 
-const Container = styled.div``;
+const Container = styled.div`
+  background: ${(props) => props.theme.colors.defaultColor};
+  color: ${(props) => props.theme.colors.chatText};
+`;
 
 const ChatHeader = styled.div`
   height: 80px;

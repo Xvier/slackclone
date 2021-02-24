@@ -40,7 +40,7 @@ function Sidebar() {
 export default Sidebar;
 
 const Container = styled.div`
-  background: #3f0e40;
+  background: ${(props) => props.theme.colors.sideBarBackground};
 `;
 
 const WorkspaceContainer = styled.div`
@@ -50,7 +50,7 @@ const WorkspaceContainer = styled.div`
   align-items: center;
   padding-left: 19px;
   justify-content: space-between;
-  border-bottom: 1px solid #532753;
+  border-bottom: 1px solid ${(props) => props.theme.colors.borderBottom};
 `;
 
 const Name = styled.div``;
@@ -59,8 +59,8 @@ const NewMessage = styled.div`
   width: 36px;
   height: 36px;
   background: white;
-  color: #3f0e40;
-  fill: #3f0e40;
+  color: ${(props) => props.theme.colors.colorAndFill};
+  fill: ${(props) => props.theme.colors.colorAndFill};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -72,11 +72,11 @@ const NewMessage = styled.div`
 const MainChannels = styled.div`
   padding-top: 20px;
   padding-bottom: 10px;
-  border-bottom: 1px solid #532753;
+  border-bottom: 1px solid ${(props) => props.theme.colors.borderBottom};
 `;
 
 const MainChannelItem = styled.div`
-  color: rgb(188, 171, 188);
+  color: ${(props) => props.theme.colors.sideBarText};
   display: grid;
   grid-template-columns: 15% auto;
   height: 28px;
@@ -84,12 +84,12 @@ const MainChannelItem = styled.div`
   padding-left: 19px;
   cursor: pointer;
   :hover {
-    background: #350d36;
+    background: ${(props) => props.theme.colors.containerBackground};
   }
 `;
 
 const ChannelsContainer = styled.div`
-  color: rgb(188, 171, 188);
+  color: ${(props) => props.theme.colors.sideBarText};
   margin-top: 10px;
 `;
 const NewChannelContainer = styled.div`
@@ -110,6 +110,6 @@ const Channel = styled.div`
   cursor: pointer;
 
   :hover {
-    background: #350d36;
+    background: ${(props) => props.theme.colors.containerBackground};
   }
 `;
