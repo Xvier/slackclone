@@ -1,17 +1,38 @@
 import React from "react";
 import styled from "styled-components";
 import SendIcon from "@material-ui/icons/Send";
+import FormatBoldIcon from "@material-ui/icons/FormatBold";
+import FormatItalicIcon from "@material-ui/icons/FormatItalic";
+import LinkIcon from "@material-ui/icons/Link";
+import CodeIcon from "@material-ui/icons/Code";
+import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
+import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
+
 function ChatInput() {
   return (
     <Container>
       <InputContainer>
         <form>
           <input type="text" placeholder="Message here..." />
-          <SendButton>
+          {/* <SendButton>
             <Send />
-            {/* <SendIcon /> */}
-          </SendButton>
+          </SendButton> */}
         </form>
+        <IconListContainer>
+          <IconList>
+            <Bold />
+            <Italic />
+            <Link />
+            <Code />
+          </IconList>
+          <IconList>
+            <Smiley />
+            <Email />
+            <SendButton>
+              <Send />
+            </SendButton>
+          </IconList>
+        </IconListContainer>
       </InputContainer>
     </Container>
   );
@@ -34,6 +55,7 @@ const InputContainer = styled.div`
     height: 42px;
     align-items: center;
     padding-left: 10px;
+    border-bottom: 1px solid grey;
     /* justify-content: space-between; */
     input {
       flex: 1;
@@ -48,10 +70,10 @@ const InputContainer = styled.div`
 `;
 
 const SendButton = styled.div`
-  background: #007a5a;
+  background: transparent;
   border-radius: 2px;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -67,6 +89,63 @@ const SendButton = styled.div`
   }
 `;
 
+const IconListContainer = styled.div`
+  padding-left: 5px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+const IconList = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+`;
+
 const Send = styled(SendIcon)`
-  color: #d9d9d9;
+  color: black;
+`;
+
+const Bold = styled(FormatBoldIcon)`
+  cursor: pointer;
+  padding-right: 5px;
+  :hover {
+    color: gray;
+  }
+`;
+const Italic = styled(FormatItalicIcon)`
+  cursor: pointer;
+  padding-right: 5px;
+  :hover {
+    color: gray;
+  }
+`;
+const Link = styled(LinkIcon)`
+  cursor: pointer;
+  padding-right: 5px;
+  :hover {
+    color: gray;
+  }
+`;
+const Code = styled(CodeIcon)`
+  cursor: pointer;
+  padding-right: 5px;
+  :hover {
+    color: gray;
+  }
+`;
+
+const Smiley = styled(SentimentSatisfiedIcon)`
+  cursor: pointer;
+  padding-right: 5px;
+  :hover {
+    color: gray;
+  }
+`;
+
+const Email = styled(AlternateEmailIcon)`
+  cursor: pointer;
+  padding-right: 5px;
+  :hover {
+    color: gray;
+  }
 `;
