@@ -7,5 +7,7 @@ export const normalTheme = {
     sideBarText: "rgb(188, 171, 188)",
     defaultColor: "white",
     chatText: "black",
+    chatBackground: "#f9ea8f",
+    chatBackgroundImage: "linear-gradient(315deg, #f9ea8f 0%, #aff1da 74%)",
   },
 };

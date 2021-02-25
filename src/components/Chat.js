@@ -33,10 +33,11 @@ function Chat() {
 export default Chat;
 
 const Container = styled.div`
-  background: ${(props) => props.theme.colors.defaultColor};
+  background: ${(props) => props.theme.colors.chatBackground};
   color: ${(props) => props.theme.colors.chatText};
   display: grid;
   grid-template-rows: 64px auto min-content;
+  background-image: ${(props) => props.theme.colors.chatBackgroundImage};
 `;
 
 const ChatHeader = styled.div`
