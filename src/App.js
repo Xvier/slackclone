@@ -8,7 +8,8 @@ import styled from "styled-components";
 import { ThemeProvider } from "styled-components";
 import { normalTheme } from "./themes/purple";
 import { darkTheme } from "./themes/dark";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import db from "./firebase";
 
 function App() {
   const stored = localStorage.getItem("isDarkMode");
@@ -21,6 +22,23 @@ function App() {
     localStorage.setItem("isDarkMode", !isDarkMode);
   }
 
+  const [rooms, setRooms] = useState([]);
+
+  const getChannels = () => {
+    db.collection("rooms").onSnapshot((snapshot) => {
+      setRooms(
+        snapshot.docs.map((doc) => {
+          return { id: doc.id, name: doc.data().name };
+        })
+      );
+    });
+  };
+
+  useEffect(() => {
+    console.log(process.env);
+    getChannels();
+  }, []);
+
   return (
     <div className="App">
       <ThemeProvider theme={isDarkMode ? darkTheme : normalTheme}>
@@ -28,7 +46,7 @@ function App() {
           <Container>
             <Header runClick={handleClick} />
             <Main>
-              <Sidebar />
+              <Sidebar rooms={rooms} />
               <Switch>
                 <Route path="/room">
                   <Chat />
