@@ -9,7 +9,7 @@ import { ThemeProvider } from "styled-components";
 import { normalTheme } from "./themes/purple";
 import { darkTheme } from "./themes/dark";
 import { useEffect, useState } from "react";
-import db from "./firebase";
+import { auth, db } from "./firebase";
 
 function App() {
   const stored = localStorage.getItem("isDarkMode");
@@ -17,12 +17,14 @@ function App() {
     stored === "true" ? true : false
   );
 
+  const [rooms, setRooms] = useState([]);
+
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
   function handleClick() {
     setIsDarkMode(!isDarkMode);
     localStorage.setItem("isDarkMode", !isDarkMode);
   }
-
-  const [rooms, setRooms] = useState([]);
 
   const getChannels = () => {
     db.collection("rooms").onSnapshot((snapshot) => {
@@ -34,8 +36,14 @@ function App() {
     });
   };
 
+  const signOut = () => {
+    auth.signOut().then(() => {
+      localStorage.removeItem("user");
+      setUser(null);
+    });
+  };
+
   useEffect(() => {
-    console.log(process.env);
     getChannels();
   }, []);
 
@@ -43,20 +51,24 @@ function App() {
     <div className="App">
       <ThemeProvider theme={isDarkMode ? darkTheme : normalTheme}>
         <Router>
-          <Container>
-            <Header runClick={handleClick} />
-            <Main>
-              <Sidebar rooms={rooms} />
-              <Switch>
-                <Route path="/room">
-                  <Chat />
-                </Route>
-                <Route path="/">
-                  <Login />
-                </Route>
-              </Switch>
-            </Main>
-          </Container>
+          {!user ? (
+            <Login setUser={setUser} />
+          ) : (
+            <Container>
+              <Header signOut={signOut} user={user} runClick={handleClick} />
+              <Main>
+                <Sidebar rooms={rooms} />
+                <Switch>
+                  <Route path="/room/:channelId">
+                    <Chat user={user} />
+                  </Route>
+                  <Route path="/">
+                    <HomeContainer>Select or Create Channel</HomeContainer>
+                  </Route>
+                </Switch>
+              </Main>
+            </Container>
+          )}
         </Router>
       </ThemeProvider>
     </div>
@@ -69,10 +81,19 @@ const Container = styled.div`
   width: 100%;
   height: 100vh;
   display: grid;
-  grid-template-rows: 38px auto;
+  grid-template-rows: 38px minmax(0, 1fr);
 `;
 
 const Main = styled.div`
   display: grid;
   grid-template-columns: 260px auto;
+`;
+
+const HomeContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+  font-size: 50px;
+  background-image: ${(props) => props.theme.colors.chatBackgroundImage};
 `;

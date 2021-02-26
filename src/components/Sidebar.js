@@ -1,11 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import AddCircleOutlineIcon from "@material-ui/icons/AddCircleOutline";
 import { sidebarItems } from "../data/SidebarData";
 import AddIcon from "@material-ui/icons/Add";
-import db from "../firebase";
+import { db } from "../firebase";
+import { useHistory } from "react-router-dom";
+import DeleteOutlineIcon from "@material-ui/icons/DeleteOutline";
 
 function Sidebar({ rooms }) {
+  const history = useHistory();
+
+  const [channelId, setChannelId] = useState();
+
   const addChannel = () => {
     const promptName = prompt("Enter channel name");
     if (promptName) {
@@ -13,6 +19,32 @@ function Sidebar({ rooms }) {
         name: promptName,
       });
     }
+  };
+
+  const goToChannel = (id) => {
+    if (id) {
+      history.push(`/room/${id}`);
+      updateChannelList();
+    }
+  };
+
+  const deleteChannel = (id) => {
+    if (id) {
+      db.collection("rooms")
+        .doc(id)
+        .delete()
+        .then(() => {
+          alert("Room is Deleted");
+          history.push(`/room`);
+        })
+        .catch((error) => {
+          console.error("Cannot find document: ", error);
+        });
+    }
+  };
+
+  const updateChannelList = () => {
+    setChannelId(window.location.pathname.split("/")[2]);
   };
 
   return (
@@ -38,7 +70,14 @@ function Sidebar({ rooms }) {
         </NewChannelContainer>
         <ChannelsList>
           {rooms.map((item) => (
-            <Channel key={item.id}># {item.name}</Channel>
+            <Channel onClick={() => goToChannel(item.id)} key={item.id}>
+              <div># {item.name} </div>
+              {item.id === channelId ? (
+                <DeleteIcon onClick={() => deleteChannel(item.id)} />
+              ) : (
+                ""
+              )}
+            </Channel>
           ))}
         </ChannelsList>
       </ChannelsContainer>
@@ -117,8 +156,15 @@ const Channel = styled.div`
   align-items: center;
   padding-left: 19px;
   cursor: pointer;
-
+  justify-content: space-between;
+  padding-right: 30px;
   :hover {
     background: ${(props) => props.theme.colors.containerBackground};
+  }
+`;
+
+const DeleteIcon = styled(DeleteOutlineIcon)`
+  :hover {
+    color: gray;
   }
 `;

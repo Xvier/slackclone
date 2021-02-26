@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import SendIcon from "@material-ui/icons/Send";
 import FormatBoldIcon from "@material-ui/icons/FormatBold";
@@ -8,15 +8,29 @@ import CodeIcon from "@material-ui/icons/Code";
 import AlternateEmailIcon from "@material-ui/icons/AlternateEmail";
 import SentimentSatisfiedIcon from "@material-ui/icons/SentimentSatisfied";
 
-function ChatInput() {
+function ChatInput({ sendMessage }) {
+  const [input, setInput] = useState("");
+
+  const send = (e) => {
+    e.preventDefault();
+    if (!input) return;
+    sendMessage(input);
+    setInput("");
+  };
+
   return (
     <Container>
       <InputContainer>
         <form>
-          <input type="text" placeholder="Message here..." />
-          {/* <SendButton>
+          <input
+            onChange={(e) => setInput(e.target.value)}
+            type="text"
+            value={input}
+            placeholder="Message here..."
+          />
+          <SendButton type="submit" onClick={send}>
             <Send />
-          </SendButton> */}
+          </SendButton>
         </form>
         <IconListContainer>
           <IconList>
@@ -28,9 +42,6 @@ function ChatInput() {
           <IconList>
             <Smiley />
             <Email />
-            <SendButton>
-              <Send />
-            </SendButton>
           </IconList>
         </IconListContainer>
       </InputContainer>
@@ -69,7 +80,7 @@ const InputContainer = styled.div`
   }
 `;
 
-const SendButton = styled.div`
+const SendButton = styled.button`
   background: transparent;
   border-radius: 2px;
   width: 28px;
@@ -78,6 +89,7 @@ const SendButton = styled.div`
   align-items: center;
   justify-content: center;
   margin-right: 5px;
+  border: none;
   cursor: pointer;
 
   :hover {
