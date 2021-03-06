@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import StarBorderIcon from "@material-ui/icons/StarBorder";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
@@ -13,6 +13,11 @@ function Chat({ user }) {
   const [channel, setChannel] = useState();
   const [messages, setMessages] = useState();
 
+  const dummy = useRef();
+
+  useEffect(() => {
+    dummy.current.scrollIntoView({ behavior: "smooth" });
+  }, [messages]);
   const getChannel = () => {
     db.collection("rooms")
       .doc(channelId)
@@ -77,6 +82,7 @@ function Chat({ user }) {
               key={index}
             />
           ))}
+        <span ref={dummy}></span>
       </MessageContainer>
       <ChatInput sendMessage={sendMessage}></ChatInput>
     </Container>
